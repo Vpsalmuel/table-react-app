@@ -1,25 +1,43 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from "react";
+import Tables from "./component/Tables";
+import "./index.css";
 
-function App() {
+const apiUrl = "https://jsonplaceholder.typicode.com/";
+
+const App = () => {
+  //const [loading, setloading] = useState(false);
+  const [users, setusers] = useState([
+    {
+      name: null,
+      email: null,
+      street: null,
+      phone: null,
+    },
+  ]);
+
+  const getUsers = async () => {
+    //setloading(true);
+    try {
+      const response = await fetch(apiUrl + "users");
+      const data = await response.json();
+      setusers(data);
+    } catch (error) {
+      console.log(error);
+      // setloading(false);
+    }
+  };
+  console.log(users);
+
+  useEffect(() => {
+    getUsers();
+  }, []);
+  // const generateNum
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <Tables users={users} />{" "}
     </div>
   );
-}
+};
 
 export default App;
